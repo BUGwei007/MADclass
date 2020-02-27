@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html, #allmap {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hZIW1Ij2vHKtITApWBiL0UGycyKF0cZb"></script>
+	<title>Demo</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+	
+	var map = new BMap.Map('allmap');
+	
+	var aim_point = new BMap.Point(129.891815,32.763184);
+	var ori_point = new BMap.Point(117.1814,39.1149);
+
+	var myIcon = new BMap.Icon('./Icon/spiderman.png', new BMap.Size(32,32));
+
+	var aim_marker = new BMap.Marker(aim_point,{icon:myIcon});
+	var ori_marker = new BMap.Marker(ori_point,{icon:myIcon});
+
+	map.addOverlay(aim_marker);
+	aim_marker.setAnimation(BMAP_ANIMATION_BOUNCE);		//标记弹跳动画
+	map.addOverlay(ori_marker);
+	ori_marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+
+	var label = new BMap.Label("日本长崎县",{offset:new BMap.Size(30,0)});
+	aim_marker.setLabel(label);
+
+	map.centerAndZoom(ori_point, 15);
+
+	window.setTimeout(function(argument) {
+		map.panTo(aim_point);
+	}, 5000);
+
+	var opts = {
+	  width : 250,     // 信息窗口宽度
+	  height: 175,     // 信息窗口高度
+	  title : "长崎县" , // 信息窗口标题
+	};
+	var infoWindow = new BMap.InfoWindow("lat：32.763184<br> lng：129.891815<br> 地理位置：长崎县位于日本九州岛西北部，靠近朝鲜半岛和中国大陆，距中国上海市800公里，韩国釜山市49.5公里，是日本距离亚洲大陆最近的地方。", opts);  // 创建信息窗口对象
+	aim_marker.addEventListener("click", function(){
+		map.openInfoWindow(infoWindow, aim_point); 
+	});		//开启信息窗口
+
+	map.addControl(new BMap.NavigationControl());
+	map.addControl(new BMap.ScaleControl());
+	map.addControl(new BMap.OverviewMapControl());
+	map.enableScrollWheelZoom(true);	
+
+</script>
